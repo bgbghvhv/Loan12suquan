@@ -1,4 +1,4 @@
-class Player {
+export class Player {
     constructor(name, health, mana, damage, img) {
         this.name = name;
         this.health = health;
@@ -8,8 +8,7 @@ class Player {
     }
 
     show() {
-        console.log(this.name + " " + this.img + " " + this.health + " " + this.mana);
+        return this.name + "\n " + this.img + "\n " + this.health + "\n " + this.mana;
     }
 }
-
-let player = new Player("Hip", 100, 100, 10, "");
+    

@@ -1,3 +1,4 @@
+import {Player} from "./Player.js";
 
 var blocks = ["sword", "heart", "banhchung", "firewater", "vndcoin", "book"];
 var board = [];
@@ -6,10 +7,11 @@ var columns = 9;
 var score = [0, 0];
 let isTurn = 0; // false = nguoi choi // true: bot
 
+var player1 = new Player("Hiep", 300, 0, 10, "player.jpg");
+var player2 = new Player("Bot", 500, 0, 10, "bot.jpg");
 
 var currTile;
 var otherTile;
-
 
 window.onload = function () {
     startGame();
@@ -18,9 +20,13 @@ window.onload = function () {
     window.setInterval(function () {
         checkItem();
         slideCandy();
-        generateCandy();
-        if (isTurn) botPlay();
-    }, 500);
+        var check = generateCandy();
+        if (isTurn && check) {
+            setTimeout(() => {
+                botPlay();
+            }, 1000);
+        }
+    }, 200);
 }
 
 function botPlay() {
@@ -40,13 +46,16 @@ function botPlay() {
                 let otherImg = board[r2][c2].src;
                 currTile.src = otherImg;
                 otherTile.src = currImg;
+            } else {
+                console.log(currImg + " " + otherImg);
+                isTurn = 0;
+                return;
             }
         }
     }
-    isTurn = 0;
 }
 
-function randomCandy() {
+function randomBlock() {
     return blocks[Math.floor(Math.random() * blocks.length)]; //0 - 5.99
 }
 
@@ -57,7 +66,7 @@ function startGame() {
             // <img id="0-0" src="./images/Red.png">
             let tile = document.createElement("img");
             tile.id = r.toString() + "-" + c.toString();
-            tile.src = "./images/" + randomCandy() + ".png";
+            tile.src = "./images/" + randomBlock() + ".png";
 
             //DRAG FUNCTIONALITY
             tile.addEventListener("dragstart", dragStart); //click on a item, initialize drag process
@@ -140,7 +149,8 @@ function checkItem() {
     checkFourItem();
     checkThreeItem();
     document.getElementById("score").innerText = score[0] + " " + score[1];
-
+    document.getElementById("player").innerText = player1.show()
+    document.getElementById("bot").innerText = player2.show()
 }
 
 function checkThreeItem() {
@@ -214,7 +224,7 @@ function checkFourItem() {
 function checkFiveItem() {
     //check rows
     for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns - 4; c++) {
+       for (let c = 0; c < columns - 4; c++) {
             let item1 = board[r][c];
             let item2 = board[r][c + 1];
             let item3 = board[r][c + 2];
@@ -465,10 +475,13 @@ function slideCandy() {
 }
 
 function generateCandy() {
+    var check = true;
     for (let c = 0; c < columns; c++) {
         if (board[0][c].src.includes("blank")) {
-            board[0][c].src = "./images/" + randomCandy() + ".png";
+            board[0][c].src = "./images/" + randomBlock() + ".png";
+            check = false;
         }
     }
+    return check;
 }
 
