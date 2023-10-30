@@ -1,20 +1,104 @@
-
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Candy Crush</title>
-        <link rel="stylesheet" href="loan12suquan.css">
-        <script type="module" src="loan12suquan.js"></script>
-    </head>
 
-    <body>
-        <h1>Score: <span id="score">0</span></h1>
-        <div class="container">
-            <div id="player">Người chơi</div>
-            <div id="board"></div>
-            <div id="bot">Máy</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candy Crush</title>
+    <link rel="stylesheet" href="loan12suquan.css">
+    <style>
+        .menu-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .player-info {
+            margin: 0 20px;
+        }
+
+        .player-name {
+            font-size: 30px;
+        }
+
+        .health-bar {
+            width: 200px;
+            height: 30px;
+            background-color: #ccc;
+            border: 1px solid #000;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .bar-inner {
+            height: 100%;
+        }
+
+        #player-health {
+            background-color: red;
+        }
+
+        #bot-health {
+            background-color: red;
+        }
+
+        .stat-label {
+            font-size: 20px;
+        }
+
+        .mana-bar {
+            width: 200px;
+            height: 30px;
+            background-color: #ccc;
+            border: 1px solid #000;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        #player-mana {
+            background-color: blue;
+        }
+
+        #bot-mana {
+            background-color: blue;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="menu-container" class="menu-container">
+        <div class="player-info">
+            <h2 class="player-name">Người chơi</h2>
+            <div class="health-bar">
+                <div class="bar-inner" id="player-health">100/100</div>
+            </div>
+            <div class="mana-bar">
+                <div class="bar-inner" id="player-mana">100/100</div>
+            </div>
         </div>
-    </body>
+        <div class="player-info">
+            <h2 class="player-name">Máy</h2>
+            <div class="health-bar">
+                <div class="bar-inner" id="bot-health">100/100</div>
+            </div>
+            <div class="mana-bar">
+                <div class="bar-inner" id="bot-mana">100/100</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="player"></div>
+        <div id="board"></div>
+        <div id="bot"></div>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.1/gsap.min.js"></script>
+<script type="module" src="loan12suquan.js"></script>
+
 </html>

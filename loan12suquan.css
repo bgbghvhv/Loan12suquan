@@ -38,3 +38,8 @@ body {
     width: 25%;
 }
 
+#player img,
+#bot img {
+    position: relative;
+    z-index: 1;
+}

@@ -1,14 +1,13 @@
-import {Player} from "./Player.js";
+import { Player } from "./Player.js";
 
 var blocks = ["sword", "heart", "banhchung", "firewater", "vndcoin", "book"];
 var board = [];
 var rows = 9;
 var columns = 9;
-var score = [0, 0];
 let isTurn = 0; // false = nguoi choi // true: bot
 
-var player1 = new Player("Hiep", 300, 0, 10, "player.jpg");
-var player2 = new Player("Bot", 500, 0, 10, "bot.jpg");
+var player1 = new Player("Hiep", 300, 0, 10, "./images/pikachu.png");
+var player2 = new Player("Bot", 500, 0, 10, "./images/dragon.png");
 
 var currTile;
 var otherTile;
@@ -21,12 +20,13 @@ window.onload = function () {
         checkItem();
         slideCandy();
         var check = generateCandy();
-        if (isTurn && check) {
-            setTimeout(() => {
-                botPlay();
-            }, 1000);
-        }
-    }, 200);
+        // if (isTurn && check) {
+        //     isTurn = 0;
+        //     setTimeout(() => {
+        //         botPlay();
+        //     }, 1000);
+        // }
+    }, 500);
 }
 
 function botPlay() {
@@ -48,7 +48,6 @@ function botPlay() {
                 otherTile.src = currImg;
             } else {
                 console.log(currImg + " " + otherImg);
-                isTurn = 0;
                 return;
             }
         }
@@ -140,7 +139,7 @@ function dragEnd() {
             otherTile.src = currImg;
             return
         }
-        isTurn = 1;
+        isTurn = 0;
     }
 }
 
@@ -148,315 +147,128 @@ function checkItem() {
     checkFiveItem();
     checkFourItem();
     checkThreeItem();
-    document.getElementById("score").innerText = score[0] + " " + score[1];
-    document.getElementById("player").innerText = player1.show()
-    document.getElementById("bot").innerText = player2.show()
+    document.getElementById("player").innerHTML = `<img src="` + player1.img + `" style="height: 300px;" alt="">`;
+    document.getElementById("bot").innerHTML = `<img src="` + player2.img + `" style="height: 300px;" alt="">`;
 }
+
+function checkListItem(listItem) {
+    if (listItem[0].src.includes("blank")) return false;
+
+    for (let i = 1; i < listItem.length; i++) {
+        if (listItem[i].src != listItem[i - 1].src) return false;
+    }
+    return true;
+}
+
+function animateElementDisappear(element) {
+    var newSrc = "./images/blank.png";
+    gsap.to(element, {
+        opacity: 0, duration: 1, onComplete: () => {
+            element.src = newSrc;
+            gsap.to(element, { opacity: 1, duration: 1 });
+        }
+    });
+}
+
+function removeListItem(listItem) {
+    listItem.forEach(element => {
+        animateElementDisappear(element);
+    });
+}
+
+const START_ROW_THREE = [0, 0]
+const START_COL_THREE = [0, 0]
+const END_ROW_THREE = [2, 0]
+const END_COL_THREE = [0, 2]
 
 function checkThreeItem() {
-    //check rows
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns - 2; c++) {
-            let item1 = board[r][c];
-            let item2 = board[r][c + 1];
-            let item3 = board[r][c + 2];
-            if (item1.src == item2.src && item2.src == item3.src && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                score[isTurn] += 30;
-            }
-        }
-    }
-
-    //check columns
-    for (let c = 0; c < columns; c++) {
-        for (let r = 0; r < rows - 2; r++) {
-            let item1 = board[r][c];
-            let item2 = board[r + 1][c];
-            let item3 = board[r + 2][c];
-            if (item1.src == item2.src && item2.src == item3.src && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                score[isTurn] += 30;
+    for (let time = 0; time < START_ROW_THREE.length; time++) {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < columns; j++) {
+                checkListInSquare(i, j, START_ROW_THREE[time], END_ROW_THREE[time], START_COL_THREE[time], END_COL_THREE[time], true);
             }
         }
     }
 }
+
+const START_ROW_FOUR = [0, 0]
+const START_COL_FOUR = [0, 0]
+const END_ROW_FOUR = [3, 0]
+const END_COL_FOUR = [0, 3]
 
 function checkFourItem() {
-    //check rows
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns - 3; c++) {
-            let item1 = board[r][c];
-            let item2 = board[r][c + 1];
-            let item3 = board[r][c + 2];
-            let item4 = board[r][c + 3];
-            if (item1.src == item2.src && item2.src == item3.src && item3.src == item4.src && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                item4.src = "./images/blank.png";
-                score[isTurn] += 50;
-            }
-        }
-    }
-
-    //check columns
-    for (let c = 0; c < columns; c++) {
-        for (let r = 0; r < rows - 3; r++) {
-            let item1 = board[r][c];
-            let item2 = board[r + 1][c];
-            let item3 = board[r + 2][c];
-            let item4 = board[r + 3][c];
-            if (item1.src == item2.src && item2.src == item3.src && item3.src == item4.src && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                item4.src = "./images/blank.png";
-                score[isTurn] += 50;
+    for (let time = 0; time < START_ROW_FOUR.length; time++) {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < columns; j++) {
+                checkListInSquare(i, j, START_ROW_FOUR[time], END_ROW_FOUR[time], START_COL_FOUR[time], END_COL_FOUR[time], true);
             }
         }
     }
 }
 
+const START_ROW_FIVE = [0, 0, 0, -2,  0, -2, -1, -1, -2,  0];
+const START_COL_FIVE = [0, 0, 0,  0, -2, -2,  0, -2, -1, -1];
+const END_ROW_FIVE =   [4, 0, 2,  0,  2,  0,  1,  1,  0,  2];
+const END_COL_FIVE =   [0, 4, 2,  2,  0,  0,  2,  0,  1,  1];
+
 function checkFiveItem() {
-    //check rows
-    for (let r = 0; r < rows; r++) {
-       for (let c = 0; c < columns - 4; c++) {
-            let item1 = board[r][c];
-            let item2 = board[r][c + 1];
-            let item3 = board[r][c + 2];
-            let item4 = board[r][c + 3];
-            let item5 = board[r][c + 4];
-            if (item1.src == item2.src && item2.src == item3.src && item3.src == item4.src && item4.src == item5.src && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                item4.src = "./images/blank.png";
-                item5.src = "./images/blank.png";
-                score[isTurn] += 100;
+    for (let time = 0; time < START_ROW_FIVE.length; time++) {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < columns; j++) {
+                checkListInSquare(i, j, START_ROW_FIVE[time], END_ROW_FIVE[time], START_COL_FIVE[time], END_COL_FIVE[time], true);
+            }
+        }
+    }
+}
+
+const rowValid = [0, 2];
+const colValid = [2, 0];
+
+function checkInSquare(row, col) {
+    if (0 <= row && row < rows &&
+        0 <= col && col < columns) return true;
+    return false;
+}
+
+function checkListInSquare(row, col, startX, endX, startY, endY, isDelete) {
+    var list = [];
+    var count = 0;
+    var result;
+    for (let i = startX; i <= endX; i++) {
+        for (let j = startY; j <= endY; j++) {
+            let xx = row + i;
+            let yy = col + j;
+
+            if (checkInSquare(xx, yy)) {
+                list[count++] = board[xx][yy];
+            } else {
+                return false;
             }
         }
     }
 
-    //check columns
-    for (let c = 0; c < columns; c++) {
-        for (let r = 0; r < rows - 4; r++) {
-            let item1 = board[r][c];
-            let item2 = board[r + 1][c];
-            let item3 = board[r + 2][c];
-            let item4 = board[r + 3][c];
-            let item5 = board[r + 4][c];
-            if (item1.src == item2.src && item2.src == item3.src && item3.src == item4.src && item4.src == item5.src && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                item4.src = "./images/blank.png";
-                item5.src = "./images/blank.png";
-                score[isTurn] += 100;
-            }
-        }
+    result = checkListItem(list);
+
+    if (result && isDelete) {
+        removeListItem(list);
     }
 
-    // check L right + down
-    for (let r = 0; r < rows - 2; r++) {
-        for (let c = 0; c < columns - 2; c++) {
-            let item1 = board[r][c];
-            let item2 = board[r][c + 1];
-            let item3 = board[r][c + 2];
-            let item4 = board[r + 1][c];
-            let item5 = board[r + 2][c];
-            if (item1.src == item2.src && item2.src == item3.src
-                && item3.src == item4.src && item4.src == item5.src
-                && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                item4.src = "./images/blank.png";
-                item5.src = "./images/blank.png";
-                score[isTurn] += 100;
-            }
-        }
-    }
-
-    // check L right + up
-    for (let r = 2; r < rows; r++) {
-        for (let c = 0; c < columns - 2; c++) {
-            let item1 = board[r][c];
-            let item2 = board[r][c + 1];
-            let item3 = board[r][c + 2];
-            let item4 = board[r - 1][c];
-            let item5 = board[r - 2][c];
-            if (item1.src == item2.src && item2.src == item3.src
-                && item3.src == item4.src && item4.src == item5.src
-                && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                item4.src = "./images/blank.png";
-                item5.src = "./images/blank.png";
-                score[isTurn] += 100;
-            }
-        }
-    }
-
-    // check L left + down
-    for (let r = 0; r < rows - 2; r++) {
-        for (let c = 2; c < columns; c++) {
-            let item1 = board[r][c];
-            let item2 = board[r][c - 1];
-            let item3 = board[r][c - 2];
-            let item4 = board[r + 1][c];
-            let item5 = board[r + 2][c];
-            if (item1.src == item2.src && item2.src == item3.src
-                && item3.src == item4.src && item4.src == item5.src
-                && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                item4.src = "./images/blank.png";
-                item5.src = "./images/blank.png";
-                score[isTurn] += 100;
-            }
-        }
-    }
-
-    // check L left + up
-    for (let r = 2; r < rows; r++) {
-        for (let c = 2; c < columns; c++) {
-            let item1 = board[r][c];
-            let item2 = board[r][c - 1];
-            let item3 = board[r][c - 2];
-            let item4 = board[r - 1][c];
-            let item5 = board[r - 2][c];
-            if (item1.src == item2.src && item2.src == item3.src
-                && item3.src == item4.src && item4.src == item5.src
-                && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                item4.src = "./images/blank.png";
-                item5.src = "./images/blank.png";
-                score[isTurn] += 100;
-            }
-        }
-    }
-
-    // check T right
-    for (let r = 1; r < rows - 1; r++) {
-        for (let c = 0; c < columns - 2; c++) {
-            let item1 = board[r][c];
-            let item2 = board[r][c + 1];
-            let item3 = board[r][c + 2];
-            let item4 = board[r - 1][c];
-            let item5 = board[r + 1][c];
-            if (item1.src == item2.src && item2.src == item3.src
-                && item3.src == item4.src && item4.src == item5.src
-                && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                item4.src = "./images/blank.png";
-                item5.src = "./images/blank.png";
-                score[isTurn] += 100;
-            }
-        }
-    }
-
-    // check T left
-    for (let r = 1; r < rows - 1; r++) {
-        for (let c = 2; c < columns; c++) {
-            let item1 = board[r][c];
-            let item2 = board[r][c - 1];
-            let item3 = board[r][c - 2];
-            let item4 = board[r - 1][c];
-            let item5 = board[r + 1][c];
-            if (item1.src == item2.src && item2.src == item3.src
-                && item3.src == item4.src && item4.src == item5.src
-                && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                item4.src = "./images/blank.png";
-                item5.src = "./images/blank.png";
-                score[isTurn] += 100;
-            }
-        }
-    }
-
-    // check T up
-    for (let r = 2; r < rows; r++) {
-        for (let c = 1; c < columns - 1; c++) {
-            let item1 = board[r][c];
-            let item2 = board[r][c + 1];
-            let item3 = board[r][c - 1];
-            let item4 = board[r - 1][c];
-            let item5 = board[r - 2][c];
-            if (item1.src == item2.src && item2.src == item3.src
-                && item3.src == item4.src && item4.src == item5.src
-                && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                item4.src = "./images/blank.png";
-                item5.src = "./images/blank.png";
-                score[isTurn] += 100;
-            }
-        }
-    }
-
-    // check T down
-    for (let r = 0; r < rows - 2; r++) {
-        for (let c = 1; c < columns - 1; c++) {
-            let item1 = board[r][c];
-            let item2 = board[r][c + 1];
-            let item3 = board[r][c - 1];
-            let item4 = board[r + 1][c];
-            let item5 = board[r + 2][c];
-            if (item1.src == item2.src && item2.src == item3.src
-                && item3.src == item4.src && item4.src == item5.src
-                && !item1.src.includes("blank")) {
-                item1.src = "./images/blank.png";
-                item2.src = "./images/blank.png";
-                item3.src = "./images/blank.png";
-                item4.src = "./images/blank.png";
-                item5.src = "./images/blank.png";
-                score[isTurn] += 100;
-            }
-        }
-    }
+    return result;
 }
 
 function checkValid() {
-    //check rows
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns - 2; c++) {
-            let item1 = board[r][c];
-            let item2 = board[r][c + 1];
-            let item3 = board[r][c + 2];
-            if (item1.src == item2.src && item2.src == item3.src && !item1.src.includes("blank")) {
-                return true;
-            }
-        }
-    }
-
-    //check columns
-    for (let c = 0; c < columns; c++) {
-        for (let r = 0; r < rows - 2; r++) {
-            let item1 = board[r][c];
-            let item2 = board[r + 1][c];
-            let item3 = board[r + 2][c];
-            if (item1.src == item2.src && item2.src == item3.src && !item1.src.includes("blank")) {
-                return true;
+    for (let time = 0; time < rowValid.length; time++) {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < columns; j++) {
+                if (checkListInSquare(i, j, 0, rowValid[time], 0, colValid[time], false)) {
+                    return true;
+                }
             }
         }
     }
 
     return false;
 }
-
 
 function slideCandy() {
     for (let c = 0; c < columns; c++) {
@@ -484,4 +296,3 @@ function generateCandy() {
     }
     return check;
 }
-

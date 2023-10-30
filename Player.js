@@ -10,5 +10,6 @@ export class Player {
     show() {
         return this.name + "\n " + this.img + "\n " + this.health + "\n " + this.mana;
     }
+
 }
     
