@@ -160,12 +160,23 @@ function checkListItem(listItem) {
     return true;
 }
 
+// function animateElementDisappear(element) {
+//     var newSrc = "./images/blank.png";
+//     gsap.to(element, {
+//         opacity: 0, duration: 1, onComplete: () => {
+//             element.src = newSrc;
+//             gsap.to(element, { opacity: 1, duration: 1 });
+//         }
+//     });
+// }
+
 function animateElementDisappear(element) {
     var newSrc = "./images/blank.png";
+    gsap.set(element, { scale: 1, opacity: 1 }); // Thiết lập giá trị ban đầu
     gsap.to(element, {
-        opacity: 0, duration: 1, onComplete: () => {
+        scale: 0, duration: 0.2, onComplete: () => {
             element.src = newSrc;
-            gsap.to(element, { opacity: 1, duration: 1 });
+            gsap.to(element, { scale: 1, duration: 0.2 });
         }
     });
 }
