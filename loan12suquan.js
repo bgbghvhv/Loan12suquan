@@ -6,8 +6,8 @@ var rows = 9;
 var columns = 9;
 let isTurn = 0; // false = nguoi choi // true: bot
 
-var player1 = new Player("Hiep", 300, 0, 10, "./images/pikachu.png");
-var player2 = new Player("Bot", 500, 0, 10, "./images/dragon.png");
+var player1 = new Player("Dinh Bo Linh", 300, 0, 10, "./images/DinhBoLinh2.png");
+var player2 = new Player("Bot", 500, 0, 10, "./images/Bot.png");
 
 var currTile;
 var otherTile;
@@ -20,13 +20,11 @@ window.onload = function () {
         checkItem();
         slideCandy();
         var check = generateCandy();
-        // if (isTurn && check) {
-        //     isTurn = 0;
-        //     setTimeout(() => {
-        //         botPlay();
-        //     }, 1000);
-        // }
-    }, 500);
+        if (isTurn && check) {
+            isTurn = 0;
+            botPlay();
+        }
+    }, 400);
 }
 
 function botPlay() {
@@ -48,6 +46,7 @@ function botPlay() {
                 otherTile.src = currImg;
             } else {
                 console.log(currImg + " " + otherImg);
+                isTurn = 0;
                 return;
             }
         }
@@ -139,7 +138,9 @@ function dragEnd() {
             otherTile.src = currImg;
             return
         }
-        isTurn = 0;
+        setTimeout(() => {
+            isTurn = 1;
+        }, 4000); 
     }
 }
 
@@ -147,8 +148,8 @@ function checkItem() {
     checkFiveItem();
     checkFourItem();
     checkThreeItem();
-    document.getElementById("player").innerHTML = `<img src="` + player1.img + `" style="height: 300px;" alt="">`;
-    document.getElementById("bot").innerHTML = `<img src="` + player2.img + `" style="height: 300px;" alt="">`;
+    document.getElementById("player").innerHTML = `<img src="` + player1.img + `" style="height: 400px;" alt="">`;
+    document.getElementById("bot").innerHTML = `<img src="` + player2.img + `" style="height: 400px;" alt="">`;
 }
 
 function checkListItem(listItem) {
@@ -159,16 +160,6 @@ function checkListItem(listItem) {
     }
     return true;
 }
-
-// function animateElementDisappear(element) {
-//     var newSrc = "./images/blank.png";
-//     gsap.to(element, {
-//         opacity: 0, duration: 1, onComplete: () => {
-//             element.src = newSrc;
-//             gsap.to(element, { opacity: 1, duration: 1 });
-//         }
-//     });
-// }
 
 function animateElementDisappear(element) {
     var newSrc = "./images/blank.png";
