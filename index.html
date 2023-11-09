@@ -15,6 +15,13 @@
             font-size: 30px;
         }
 
+        .menu {
+            display: inline-flex;
+            background-color: rgba(241, 192, 128, 0.9);
+            padding: 0 100px;
+            border-radius: 20px;
+        }
+
         .player-info {
             margin: 0 20px;
         }
@@ -60,11 +67,76 @@
         }
 
         #player-mana {
-            background-color: blue;
+            background-color: rgb(22, 214, 214);
         }
 
         #bot-mana {
-            background-color: blue;
+            background-color: rgb(22, 214, 214);
+        }
+
+        #player-food {
+            background-color: rgb(22, 214, 70);
+        }
+
+        #bot-food {
+            background-color: rgb(22, 214, 70);
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+        .row {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #000;
         }
     </style>
 
@@ -72,22 +144,30 @@
 
 <body>
     <div id="menu-container" class="menu-container">
-        <div class="player-info">
-            <h2 class="player-name">Người chơi</h2>
-            <div class="health-bar">
-                <div class="bar-inner" id="player-health">100/100</div>
+        <div class="menu">
+            <div class="player-info">
+                <h2 class="player-name">Người chơi</h2>
+                <div class="health-bar">
+                    <div class="bar-inner" id="player-health">0/0</div>
+                </div>
+                <div class="mana-bar">
+                    <div class="bar-inner" id="player-mana">0/0</div>
+                </div>
+                <div class="mana-bar">
+                    <div class="bar-inner" id="player-food">0/0</div>
+                </div>
             </div>
-            <div class="mana-bar">
-                <div class="bar-inner" id="player-mana">100/100</div>
-            </div>
-        </div>
-        <div class="player-info">
-            <h2 class="player-name">Máy</h2>
-            <div class="health-bar">
-                <div class="bar-inner" id="bot-health">100/100</div>
-            </div>
-            <div class="mana-bar">
-                <div class="bar-inner" id="bot-mana">100/100</div>
+            <div class="player-info">
+                <h2 class="player-name">Máy</h2>
+                <div class="health-bar" style="position: relative;">
+                    <div class="bar-inner" id="bot-health" style="position: absolute; right: 0;"></div>
+                </div>
+                <div class="mana-bar" style="position: relative;">
+                    <div class="bar-inner" id="bot-mana" style="position: absolute; right: 0;"></div>
+                </div>  
+                <div class="mana-bar" style="position: relative;">
+                    <div class="bar-inner" id="bot-food" style="position: absolute; right: 0;"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -96,6 +176,63 @@
         <div id="player"></div>
         <div id="board"></div>
         <div id="bot"></div>
+    </div>
+
+    <button id="myBtn" hidden>Open Modal</button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="row" id="turnAction">
+                <table>
+                    <tr>
+                        <td>
+                            <img src="./images/sword.png" style="width: 50px; height: 50px;">
+                        </td>
+                        <td>
+                            <img src="./images/heart.png" style="width: 50px; height: 50px;">
+                        </td>
+                        <td>
+                            <img src="./images/firewater.png" style="width: 50px; height: 50px;">
+                        </td>
+                        <td>
+                            <img src="./images/banhchung.png" style="width: 50px; height: 50px;">
+                        </td>
+                        <td>
+                            <img src="./images/vndcoin.png" style="width: 50px; height: 50px;">
+                        </td>
+                        <td>
+                            <img src="./images/book.png" style="width: 50px; height: 50px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>1</span>
+                        </td>
+                        <td>
+                            <span>2</span>
+                        </td>
+                        <td>
+                            <span>3</span>
+                        </td>
+                        <td>
+                            <span>4</span>
+                        </td>
+                        <td>
+                            <span>5</span>
+                        </td>
+                        <td>
+                            <span>6</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
     </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.1/gsap.min.js"></script>

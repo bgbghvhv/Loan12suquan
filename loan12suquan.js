@@ -5,28 +5,134 @@ var board = [];
 var rows = 9;
 var columns = 9;
 let isTurn = 0; // false = nguoi choi // true: bot
-
-var player1 = new Player("Hiep", 300, 0, 10, "./images/pikachu.png");
-var player2 = new Player("Bot", 500, 0, 10, "./images/dragon.png");
+var eat = []
+var player = [] 
+player.push(new Player("Hiep", 300, 0, 300, 10, "./images/pikachu.png"))
+player.push(new Player("Bot", 300, 0, 300, 10, "./images/dragon.png"))
 
 var currTile;
 var otherTile;
 
-window.onload = function () {
-    startGame();
+// Get the modal
+var modal = document.getElementById("myModal");
 
-    //1/10th of a second
-    window.setInterval(function () {
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+window.onload = function () {
+    drawGame();
+    startGame();
+    var count = 0;
+    while (count++ < 100) {
         checkItem();
-        slideCandy();
-        var check = generateCandy();
-        // if (isTurn && check) {
-        //     isTurn = 0;
-        //     setTimeout(() => {
-        //         botPlay();
-        //     }, 1000);
-        // }
-    }, 500);
+        generateCandy()
+        slideCandy()
+    }
+    eat = [];
+    setInterval(() => {
+        player[isTurn].food -= 1;
+        document.getElementById("player-food").innerHTML = player[0].food + "/300";
+        document.getElementById("bot-food").innerHTML = player[1].food + "/300";
+    }, 1000);
+}
+
+function drawGame() {
+    document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" style="height: 300px;" alt="">`;
+    document.getElementById("bot").innerHTML = `<img src="` + player[1].img + `" style="height: 300px;" alt="">`;
+
+    document.getElementById("player-health").innerHTML = player[0].health + "/300";
+    document.getElementById("player-health").style.width = player[0].health/300 * 100 + "%";
+    document.getElementById("bot-health").innerHTML = player[1].health + "/300";
+    document.getElementById("bot-health").style.width = player[1].health/300 * 100 + "%";
+
+    document.getElementById("player-mana").innerHTML = player[0].mana + "/100";
+    document.getElementById("player-mana").style.width = player[0].mana + "%";
+    document.getElementById("bot-mana").innerHTML = player[1].mana + "/100";
+    document.getElementById("bot-mana").style.width = player[1].mana + "%";
+
+    document.getElementById("player-food").innerHTML = player[0].food + "/300";
+    document.getElementById("player-food").style.width = player[0].food/300 * 100 + "%";
+    document.getElementById("bot-food").innerHTML = player[1].food + "/300";
+    document.getElementById("bot-food").style.width = player[1].food/300 * 100 + "%";
+
+}
+
+function playAction() {
+    var count = 0;
+    while (count++ < 10) {
+        checkItem();
+        generateCandy()
+        slideCandy()
+    }
+
+    var str = `<table><tr>`;
+    for (const key in eat) {
+        str += `<td>
+                    <img src="./images/${key}.png" style="width: 50px; height: 50px;">
+                </td>`
+    }
+    str += `</tr><tr>`
+    for (const key in eat) {
+        str += `<td>
+                    <span>${eat[key]}</span>
+                </td>`
+    }
+    str += ` </tr></table>`
+    document.getElementById("turnAction").innerHTML = str;
+
+    if(eat["sword"]) {
+        player[1 - isTurn].health -= eat["sword"] * player[isTurn].damage;
+    }
+    
+    if(eat["heart"]) {
+        player[isTurn].health += eat["heart"] * 10;
+        if(player[isTurn].health > 300) {
+            player[isTurn].health = 300;
+        }
+    }
+
+    if(eat["firewater"]) {
+        player[isTurn].mana += eat["firewater"] * 10;
+        if(player[isTurn].mana > 100) {
+            player[isTurn].mana = 100;
+        }
+    }
+
+    if(eat["banhchung"]) {
+        player[isTurn].food += eat["banhchung"] * 5;
+        if(player[isTurn].food > 300) {
+            player[isTurn].food = 300;
+        }
+    }
+    
+    eat = []
+    isTurn = isTurn ? 0 : 1; 
+    modal.style.display = "block";
+    setTimeout(() => {
+        modal.style.display = "none";
+    }, 2000);
+
+    drawGame();
 }
 
 function botPlay() {
@@ -47,7 +153,7 @@ function botPlay() {
                 currTile.src = otherImg;
                 otherTile.src = currImg;
             } else {
-                console.log(currImg + " " + otherImg);
+                playAction()
                 return;
             }
         }
@@ -139,16 +245,18 @@ function dragEnd() {
             otherTile.src = currImg;
             return
         }
-        isTurn = 0;
+        playAction();
+        eat = [];
+        setTimeout(() => {
+            botPlay()
+        }, 3000);
     }
 }
 
 function checkItem() {
-    checkFiveItem();
+    checkFiveItem()
     checkFourItem();
-    checkThreeItem();
-    document.getElementById("player").innerHTML = `<img src="` + player1.img + `" style="height: 300px;" alt="">`;
-    document.getElementById("bot").innerHTML = `<img src="` + player2.img + `" style="height: 300px;" alt="">`;
+    checkThreeItem()
 }
 
 function checkListItem(listItem) {
@@ -160,29 +268,25 @@ function checkListItem(listItem) {
     return true;
 }
 
-// function animateElementDisappear(element) {
-//     var newSrc = "./images/blank.png";
-//     gsap.to(element, {
-//         opacity: 0, duration: 1, onComplete: () => {
-//             element.src = newSrc;
-//             gsap.to(element, { opacity: 1, duration: 1 });
-//         }
-//     });
-// }
-
 function animateElementDisappear(element) {
     var newSrc = "./images/blank.png";
-    gsap.set(element, { scale: 1, opacity: 1 }); // Thiết lập giá trị ban đầu
-    gsap.to(element, {
-        scale: 0, duration: 0.2, onComplete: () => {
-            element.src = newSrc;
-            gsap.to(element, { scale: 1, duration: 0.2 });
-        }
-    });
+    // gsap.set(element, { scale: 1, opacity: 1 }); // Thiết lập giá trị ban đầu
+    // gsap.to(element, {
+    // scale: 0, duration: 0.2, onComplete: () => {
+    element.src = newSrc;
+    // gsap.to(element, { scale: 1, duration: 0.3 });
+    // }
+    // });
 }
 
 function removeListItem(listItem) {
     listItem.forEach(element => {
+        var imageName = element.src.split('/').pop().replace(/\.[^/.]+$/, "");
+        if (eat[imageName]) {
+            eat[imageName] += 1;
+        } else {
+            eat[imageName] = 1;
+        }
         animateElementDisappear(element);
     });
 }
@@ -217,16 +321,16 @@ function checkFourItem() {
     }
 }
 
-const START_ROW_FIVE = [0, 0, 0, -2,  0, -2, -1, -1, -2,  0];
-const START_COL_FIVE = [0, 0, 0,  0, -2, -2,  0, -2, -1, -1];
-const END_ROW_FIVE =   [4, 0, 2,  0,  2,  0,  1,  1,  0,  2];
-const END_COL_FIVE =   [0, 4, 2,  2,  0,  0,  2,  0,  1,  1];
+const START_ROW_FIVE = [0, 0, 0, -2, 0, -2, -1, -1, -2, 0];
+const START_COL_FIVE = [0, 0, 0, 0, -2, -2, 0, -2, -1, -1];
+const END_ROW_FIVE = [4, 0, 2, 0, 2, 0, 1, 1, 0, 2];
+const END_COL_FIVE = [0, 4, 2, 2, 0, 0, 2, 0, 1, 1];
 
 function checkFiveItem() {
     for (let time = 0; time < START_ROW_FIVE.length; time++) {
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < columns; j++) {
-                checkListInSquare(i, j, START_ROW_FIVE[time], END_ROW_FIVE[time], START_COL_FIVE[time], END_COL_FIVE[time], true);
+                checkListInSquare(i, j, START_ROW_FIVE[time], END_ROW_FIVE[time], START_COL_FIVE[time], END_COL_FIVE[time], true)
             }
         }
     }
@@ -282,6 +386,7 @@ function checkValid() {
 }
 
 function slideCandy() {
+    var check = false;
     for (let c = 0; c < columns; c++) {
         let ind = rows - 1;
         for (let r = columns - 1; r >= 0; r--) {
@@ -293,17 +398,16 @@ function slideCandy() {
 
         for (let r = ind; r >= 0; r--) {
             board[r][c].src = "./images/blank.png";
-        }
-    }
-}
-
-function generateCandy() {
-    var check = true;
-    for (let c = 0; c < columns; c++) {
-        if (board[0][c].src.includes("blank")) {
-            board[0][c].src = "./images/" + randomBlock() + ".png";
-            check = false;
+            check = true;
         }
     }
     return check;
+}
+
+function generateCandy() {
+    for (let c = 0; c < columns; c++) {
+        if (board[0][c].src.includes("blank")) {
+            board[0][c].src = "./images/" + randomBlock() + ".png";
+        }
+    }
 }
