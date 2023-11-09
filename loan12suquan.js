@@ -6,9 +6,9 @@ var rows = 9;
 var columns = 9;
 let isTurn = 0; // false = nguoi choi // true: bot
 var eat = []
-var player = [] 
-player.push(new Player("Hiep", 300, 0, 300, 10, "./images/pikachu.png"))
-player.push(new Player("Bot", 300, 0, 300, 10, "./images/dragon.png"))
+var player = []
+player.push(new Player("Hiep", 300, 0, 300, 10, "./images/dinhbolinh2.png"))
+player.push(new Player("Bot", 300, 0, 300, 10, "./images/bot.png"))
 
 var currTile;
 var otherTile;
@@ -23,20 +23,20 @@ var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal 
-btn.onclick = function() {
-  modal.style.display = "block";
+btn.onclick = function () {
+    modal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
+span.onclick = function () {
+    modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 
 window.onload = function () {
@@ -51,8 +51,11 @@ window.onload = function () {
     eat = [];
     setInterval(() => {
         player[isTurn].food -= 1;
-        document.getElementById("player-food").innerHTML = player[0].food + "/300";
-        document.getElementById("bot-food").innerHTML = player[1].food + "/300";
+
+        document.getElementById("player-food-text").innerHTML = player[0].food + "/300";
+        document.getElementById("player-food").style.width = player[0].food / 300 * 100 + "%";
+        document.getElementById("bot-food-text").innerText = player[1].food + "/300";
+        document.getElementById("bot-food").style.width = player[1].food / 300 * 100 + "%";
     }, 1000);
 }
 
@@ -60,20 +63,20 @@ function drawGame() {
     document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" style="height: 300px;" alt="">`;
     document.getElementById("bot").innerHTML = `<img src="` + player[1].img + `" style="height: 300px;" alt="">`;
 
-    document.getElementById("player-health").innerHTML = player[0].health + "/300";
-    document.getElementById("player-health").style.width = player[0].health/300 * 100 + "%";
-    document.getElementById("bot-health").innerHTML = player[1].health + "/300";
-    document.getElementById("bot-health").style.width = player[1].health/300 * 100 + "%";
+    document.getElementById("player-health-text").innerText = player[0].health + "/300";
+    document.getElementById("player-health").style.width = player[0].health / 300 * 100 + "%";
+    document.getElementById("bot-health-text").innerText = player[1].health + "/300";
+    document.getElementById("bot-health").style.width = player[1].health / 300 * 100 + "%";
 
-    document.getElementById("player-mana").innerHTML = player[0].mana + "/100";
+    document.getElementById("player-mana-text").innerText = player[0].mana + "/100";
     document.getElementById("player-mana").style.width = player[0].mana + "%";
-    document.getElementById("bot-mana").innerHTML = player[1].mana + "/100";
+    document.getElementById("bot-mana-text").innerText = player[1].mana + "/100";
     document.getElementById("bot-mana").style.width = player[1].mana + "%";
 
-    document.getElementById("player-food").innerHTML = player[0].food + "/300";
-    document.getElementById("player-food").style.width = player[0].food/300 * 100 + "%";
-    document.getElementById("bot-food").innerHTML = player[1].food + "/300";
-    document.getElementById("bot-food").style.width = player[1].food/300 * 100 + "%";
+    document.getElementById("player-food-text").innerText = player[0].food + "/300";
+    document.getElementById("player-food").style.width = player[0].food / 300 * 100 + "%";
+    document.getElementById("bot-food-text").innerText = player[1].food + "/300";
+    document.getElementById("bot-food").style.width = player[1].food / 300 * 100 + "%";
 
 }
 
@@ -100,34 +103,36 @@ function playAction() {
     str += ` </tr></table>`
     document.getElementById("turnAction").innerHTML = str;
 
-    if(eat["sword"]) {
+    if (eat["sword"]) {
         player[1 - isTurn].health -= eat["sword"] * player[isTurn].damage;
     }
-    
-    if(eat["heart"]) {
+
+    if (eat["heart"]) {
         player[isTurn].health += eat["heart"] * 10;
-        if(player[isTurn].health > 300) {
+        if (player[isTurn].health > 300) {
             player[isTurn].health = 300;
         }
     }
 
-    if(eat["firewater"]) {
+    if (eat["firewater"]) {
         player[isTurn].mana += eat["firewater"] * 10;
-        if(player[isTurn].mana > 100) {
+        if (player[isTurn].mana > 100) {
             player[isTurn].mana = 100;
         }
     }
 
-    if(eat["banhchung"]) {
+    if (eat["banhchung"]) {
         player[isTurn].food += eat["banhchung"] * 5;
-        if(player[isTurn].food > 300) {
+        if (player[isTurn].food > 300) {
             player[isTurn].food = 300;
         }
     }
-    
+
     eat = []
-    isTurn = isTurn ? 0 : 1; 
+    document.getElementById("nameTurn").innerText = isTurn ? "Lượt của máy" : "Lượt của bạn"
+    isTurn = isTurn ? 0 : 1;
     modal.style.display = "block";
+
     setTimeout(() => {
         modal.style.display = "none";
     }, 2000);
