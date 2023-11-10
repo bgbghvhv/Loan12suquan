@@ -1,16 +1,12 @@
 export class Player {
-    constructor(name, health, mana, food, damage, img) {
+    constructor(name, health, mana, food, damage, img, maxHealth) {
         this.name = name;
         this.health = health;
         this.mana = mana;
         this.damage = damage;
         this.img = img;
         this.food = food;
+        this.maxHealth = maxHealth;
     }
-
-    show() {
-        return this.name + "\n " + this.img + "\n " + this.health + "\n " + this.mana;
-    }
-
 }
     

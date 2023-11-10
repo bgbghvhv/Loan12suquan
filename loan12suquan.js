@@ -7,8 +7,8 @@ var columns = 9;
 let isTurn = 0; // false = nguoi choi // true: bot
 var eat = []
 var player = []
-player.push(new Player("Hiep", 300, 0, 300, 10, "./images/dinhbolinh2.png"))
-player.push(new Player("Bot", 300, 0, 300, 10, "./images/bot.png"))
+player.push(new Player("Hiep", 300, 30, 100, 10, "./images/dinhbolinh4.gif", 300))
+player.push(new Player("Bot", 300, 0, 100, 10, "./images/bot.gif", 300))
 
 var currTile;
 var otherTile;
@@ -52,31 +52,31 @@ window.onload = function () {
     setInterval(() => {
         player[isTurn].food -= 1;
 
-        document.getElementById("player-food-text").innerHTML = player[0].food + "/300";
-        document.getElementById("player-food").style.width = player[0].food / 300 * 100 + "%";
-        document.getElementById("bot-food-text").innerText = player[1].food + "/300";
-        document.getElementById("bot-food").style.width = player[1].food / 300 * 100 + "%";
+        document.getElementById("player-food-text").innerHTML = player[0].food + "/100";
+        document.getElementById("player-food").style.width = player[0].food + "%";
+        document.getElementById("bot-food-text").innerText = player[1].food + "/100";
+        document.getElementById("bot-food").style.width = player[1].food + "%";
     }, 1000);
 }
 
 function drawGame() {
-    document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" style="height: 300px;" alt="">`;
-    document.getElementById("bot").innerHTML = `<img src="` + player[1].img + `" style="height: 300px;" alt="">`;
+    document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" style="margin: 0 auto;" alt="">`;
+    document.getElementById("bot").innerHTML = `<img src="` + player[1].img + `" style="margin: 0 auto;" alt="">`;
 
     document.getElementById("player-health-text").innerText = player[0].health + "/300";
-    document.getElementById("player-health").style.width = player[0].health / 300 * 100 + "%";
+    document.getElementById("player-health").style.width = player[0].health / player[0].maxHealth * 100 + "%";
     document.getElementById("bot-health-text").innerText = player[1].health + "/300";
-    document.getElementById("bot-health").style.width = player[1].health / 300 * 100 + "%";
+    document.getElementById("bot-health").style.width = player[1].health / player[1].maxHealth * 100 + "%";
 
     document.getElementById("player-mana-text").innerText = player[0].mana + "/100";
     document.getElementById("player-mana").style.width = player[0].mana + "%";
     document.getElementById("bot-mana-text").innerText = player[1].mana + "/100";
     document.getElementById("bot-mana").style.width = player[1].mana + "%";
 
-    document.getElementById("player-food-text").innerText = player[0].food + "/300";
-    document.getElementById("player-food").style.width = player[0].food / 300 * 100 + "%";
-    document.getElementById("bot-food-text").innerText = player[1].food + "/300";
-    document.getElementById("bot-food").style.width = player[1].food / 300 * 100 + "%";
+    document.getElementById("player-food-text").innerText = player[0].food + "/100";
+    document.getElementById("player-food").style.width = player[0].food + "%";
+    document.getElementById("bot-food-text").innerText = player[1].food + "/100";
+    document.getElementById("bot-food").style.width = player[1].food + "%";
 
 }
 
@@ -90,9 +90,18 @@ function playAction() {
 
     var str = `<table><tr>`;
     for (const key in eat) {
-        str += `<td>
+        if (key.includes("skill")) {
+            str +=
+                `<td>
+                    <img src="./images/${key}.png" style="height: 400px;">
+                </td>`
+        } else {
+            str +=
+                `<td>
                     <img src="./images/${key}.png" style="width: 50px; height: 50px;">
                 </td>`
+        }
+
     }
     str += `</tr><tr>`
     for (const key in eat) {
@@ -112,6 +121,9 @@ function playAction() {
         if (player[isTurn].health > 300) {
             player[isTurn].health = 300;
         }
+        if (player[isTurn].health < 0) {
+            player[isTurn].health = 0;
+        }
     }
 
     if (eat["firewater"]) {
@@ -119,12 +131,18 @@ function playAction() {
         if (player[isTurn].mana > 100) {
             player[isTurn].mana = 100;
         }
+        if (player[isTurn].mana < 0) {
+            player[isTurn].mana = 0;
+        }
     }
 
     if (eat["banhchung"]) {
         player[isTurn].food += eat["banhchung"] * 5;
-        if (player[isTurn].food > 300) {
-            player[isTurn].food = 300;
+        if (player[isTurn].food > 100) {
+            player[isTurn].food = 100;
+        }
+        if (player[isTurn].food < 0) {
+            player[isTurn].food = 0;
         }
     }
 
@@ -140,26 +158,31 @@ function playAction() {
     drawGame();
 }
 
-function botPlay() {
-    // alert("botplay")
-    for (let r = 0; r < rows - 1; r++) {
-        for (let c = 0; c < columns - 1; c++) {
-            let r2 = r + 1;
-            let c2 = c + 1;
+var BOT_MOVE_X = [0, 1]
+var BOT_MOVE_Y = [1, 0]
 
-            let currImg = currTile.src;
-            let otherImg = otherTile.src;
-            currTile.src = otherImg;
-            otherTile.src = currImg;
-            let validMove = checkValid();
-            if (!validMove) {
-                let currImg = board[r][c].src;
-                let otherImg = board[r2][c2].src;
-                currTile.src = otherImg;
-                otherTile.src = currImg;
-            } else {
-                playAction()
-                return;
+function botPlay() {
+    for (let r = rows - 2; r >= 0; r--) {
+        for (let c = columns - 2; c >= 0; c--) {
+            for (let i = 0; i < 2; i++) {
+                let r2 = r + BOT_MOVE_X[i]
+                let c2 = c + BOT_MOVE_Y[i];
+
+                let curr = board[r][c];
+                let other = board[r2][c2];
+                let temp = curr.src
+                curr.src = other.src;
+                other.src = temp
+
+                let validMove = checkValid();
+                if (!validMove) {
+                    let temp = curr.src
+                    curr.src = other.src;
+                    other.src = temp
+                } else {
+                    playAction()
+                    return;
+                }
             }
         }
     }
@@ -252,9 +275,13 @@ function dragEnd() {
         }
         playAction();
         eat = [];
+
+        var min = 3;
+        var max = 5;
+        var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
         setTimeout(() => {
             botPlay()
-        }, 3000);
+        }, randomNumber*1000);
     }
 }
 
@@ -416,3 +443,53 @@ function generateCandy() {
         }
     }
 }
+
+function useSkill(mana) {
+
+    if (isTurn == 0) {
+        var check = false;
+        var damageSkill = 0;
+
+        switch (mana) {
+            case 1:
+                if (player[isTurn].mana < 10) check = true;;
+                damageSkill = 10;
+                break;
+            case 2:
+                if (player[isTurn].mana < 20) check = true;
+                damageSkill = 20;
+                break;
+            case 3:
+                if (player[isTurn].mana < 30) check = true;
+                damageSkill = 50;
+                break;
+            case 6:
+                if (player[isTurn].mana < 60) check = true;
+                damageSkill = 100;
+                break;
+            case 10:
+                if (player[isTurn].mana < 100) check = true;
+                damageSkill = 200;
+                break;
+            default:
+                break;
+        }
+
+        if (check) {
+            alert("Không đủ mana")
+            return;
+        }
+        player[1 - isTurn].health -= damageSkill;
+        player[isTurn].mana -= mana * 10;
+
+
+
+        eat['skill' + mana] = 1;
+        playAction();
+        setTimeout(() => {
+            botPlay()
+        }, 3000);
+    }
+}
+
+window.useSkill = useSkill;
