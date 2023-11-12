@@ -49,19 +49,45 @@ window.onload = function () {
         slideCandy()
     }
     eat = [];
-    setInterval(() => {
+    let intervalId = setInterval(() => {
         player[isTurn].food -= 1;
+
+        if (player[0].food <= 0 || player[0].health <= 0) {
+            clearInterval(intervalId); 
+            alert("YOU LOSE");
+            localStorage.setItem('state', 'lose');
+            window.location.href = 'end.html';
+            return
+        }
+        if (player[1].food <= 0 || player[1].health <= 0) {
+            clearInterval(intervalId); 
+            alert("YOU WIN");
+            localStorage.setItem('state', 'win');
+            window.location.href = 'end.html';
+            return
+        }
 
         document.getElementById("player-food-text").innerHTML = player[0].food + "/100";
         document.getElementById("player-food").style.width = player[0].food + "%";
         document.getElementById("bot-food-text").innerText = player[1].food + "/100";
         document.getElementById("bot-food").style.width = player[1].food + "%";
+
+
+        if(isTurn) {
+            document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" alt="">`;
+            document.getElementById("bot").innerHTML = `<img src="` + player[1].img + `" alt="">`;
+            document.getElementById("bot").innerHTML += `<img src='./images/fire3.gif' style="height: 400px; position: relative; top: -400px; left: -50px; z-index: 0;" alt="">`;
+        } else {
+            document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" alt="">`;
+            document.getElementById("bot").innerHTML = `<img src="` + player[1].img + `" alt="">`;
+            document.getElementById("player").innerHTML += `<img src='./images/fire3.gif' style="height: 400px; position: relative; top: -400px; right: -50px; z-index: 0;" alt="">`;
+        }
     }, 1000);
 }
 
 function drawGame() {
-    document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" style="margin: 0 auto;" alt="">`;
-    document.getElementById("bot").innerHTML = `<img src="` + player[1].img + `" style="margin: 0 auto;" alt="">`;
+    document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" alt="">`;
+    document.getElementById("bot").innerHTML = `<img src="` + player[1].img + `" alt="">`;
 
     document.getElementById("player-health-text").innerText = player[0].health + "/300";
     document.getElementById("player-health").style.width = player[0].health / player[0].maxHealth * 100 + "%";
@@ -281,7 +307,7 @@ function dragEnd() {
         var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
         setTimeout(() => {
             botPlay()
-        }, randomNumber*1000);
+        }, randomNumber * 1000);
     }
 }
 

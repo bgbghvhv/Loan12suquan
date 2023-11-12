@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            /* background: url("./background.jpg"); */
+            background: url("./images/background8.gif");
+            background-size: cover;
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+            text-align: center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button {
+            width: 20vw;
+            height: 10vh;
+            margin: 10px;
+            padding: 15px 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button-play {
+            background-color: #4CAF50;
+            /* Màu nền của nút "Play again" */
+            color: white;
+        }
+
+        .button-menu {
+            background-color: #007BFF;
+            /* Màu nền của nút "Back to menu" */
+            color: white;
+        }
+
+        button:hover {
+            filter: brightness(80%);
+            /* Hiệu ứng khi di chuột qua */
+        }
+        h1 {
+            font-size: 50px;
+            margin-bottom: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>LOẠN 12 XỨ QUÂN</h1>
+        <button class="button-play" onclick="play()">Play</button>
+        <button class="button-menu" onclick="menu()">How to play</button>
+    </div>
+    <script src="menu.js"></script>
+</body>
+<script>
+    function play() {
+        window.location.href = 'index.html';
+    }
+    function menu() {
+        window.location.href = 'menu.html';
+    }
+</script>
+
+</html>
