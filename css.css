@@ -1,0 +1,226 @@
+button {
+  --border-color: #B19B7E;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+  position: relative;
+  padding: 4px 11px;
+  margin: 0;
+  width: 220px;
+  cursor: pointer;
+  transform: translateZ(0);
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.35)) drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.15));
+}
+button:before, button:after {
+  content: "";
+  width: 23px;
+  height: 15px;
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 15"><path d="M8 14L7.29289 14.7071L7.58579 15H8V14ZM20 14V15H22.4142L20.7071 13.2929L20 14ZM10.5 4.5L11.2071 3.79289L10.5 3.08579L9.79289 3.79289L10.5 4.5ZM7 8L6.29289 7.29289L5.58579 8L6.29289 8.70711L7 8ZM9.5 10.5L8.79289 11.2071L9.5 11.9142L10.2071 11.2071L9.5 10.5ZM16 4L16.7071 4.70711L17.4142 4L16.7071 3.29289L16 4ZM14.2071 0.792893L13.5 0.0857864L12.0858 1.5L12.7929 2.20711L14.2071 0.792893ZM4.5 10.5L5.20711 9.79289L4.44352 9.0293L3.74074 9.84921L4.5 10.5ZM1.5 14V15H1.95993L2.25926 14.6508L1.5 14ZM8 15H20V13H8V15ZM20.7071 13.2929L11.2071 3.79289L9.79289 5.20711L19.2929 14.7071L20.7071 13.2929ZM9.79289 3.79289L6.29289 7.29289L7.70711 8.70711L11.2071 5.20711L9.79289 3.79289ZM6.29289 8.70711L8.79289 11.2071L10.2071 9.79289L7.70711 7.29289L6.29289 8.70711ZM8.70711 13.2929L5.20711 9.79289L3.79289 11.2071L7.29289 14.7071L8.70711 13.2929ZM3.74074 9.84921L0.740743 13.3492L2.25926 14.6508L5.25926 11.1508L3.74074 9.84921ZM1.5 13H0V15H1.5V13ZM10.2071 11.2071L12.2071 9.20711L10.7929 7.79289L8.79289 9.79289L10.2071 11.2071ZM15.2071 6.20711L16.7071 4.70711L15.2929 3.29289L13.7929 4.79289L15.2071 6.20711ZM14 0V3H16V0H14ZM16.7071 3.29289L15.7071 2.29289L14.2929 3.70711L15.2929 4.70711L16.7071 3.29289ZM15.7071 2.29289L14.2071 0.792893L12.7929 2.20711L14.2929 3.70711L15.7071 2.29289Z"></path></svg>') no-repeat;
+          mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 15"><path d="M8 14L7.29289 14.7071L7.58579 15H8V14ZM20 14V15H22.4142L20.7071 13.2929L20 14ZM10.5 4.5L11.2071 3.79289L10.5 3.08579L9.79289 3.79289L10.5 4.5ZM7 8L6.29289 7.29289L5.58579 8L6.29289 8.70711L7 8ZM9.5 10.5L8.79289 11.2071L9.5 11.9142L10.2071 11.2071L9.5 10.5ZM16 4L16.7071 4.70711L17.4142 4L16.7071 3.29289L16 4ZM14.2071 0.792893L13.5 0.0857864L12.0858 1.5L12.7929 2.20711L14.2071 0.792893ZM4.5 10.5L5.20711 9.79289L4.44352 9.0293L3.74074 9.84921L4.5 10.5ZM1.5 14V15H1.95993L2.25926 14.6508L1.5 14ZM8 15H20V13H8V15ZM20.7071 13.2929L11.2071 3.79289L9.79289 5.20711L19.2929 14.7071L20.7071 13.2929ZM9.79289 3.79289L6.29289 7.29289L7.70711 8.70711L11.2071 5.20711L9.79289 3.79289ZM6.29289 8.70711L8.79289 11.2071L10.2071 9.79289L7.70711 7.29289L6.29289 8.70711ZM8.70711 13.2929L5.20711 9.79289L3.79289 11.2071L7.29289 14.7071L8.70711 13.2929ZM3.74074 9.84921L0.740743 13.3492L2.25926 14.6508L5.25926 11.1508L3.74074 9.84921ZM1.5 13H0V15H1.5V13ZM10.2071 11.2071L12.2071 9.20711L10.7929 7.79289L8.79289 9.79289L10.2071 11.2071ZM15.2071 6.20711L16.7071 4.70711L15.2929 3.29289L13.7929 4.79289L15.2071 6.20711ZM14 0V3H16V0H14ZM16.7071 3.29289L15.7071 2.29289L14.2929 3.70711L15.2929 4.70711L16.7071 3.29289ZM15.7071 2.29289L14.2071 0.792893L12.7929 2.20711L14.2929 3.70711L15.7071 2.29289Z"></path></svg>') no-repeat;
+}
+button:before {
+  left: 0;
+  transform: scaleX(-1);
+}
+button:after {
+  right: 0;
+}
+button .defs {
+  color: var(--border-color);
+  transition: color 0.3s;
+}
+button .border {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 23px auto 23px;
+  grid-template-rows: 15px auto 15px;
+}
+button .border svg {
+  width: 23px;
+  height: 15px;
+  display: block;
+  fill: black;
+  position: absolute;
+  color: var(--border-color);
+  transform: translateZ(0);
+  fill: url(#border);
+  filter: url(#inset-shadow);
+}
+button .border svg:nth-child(3) {
+  grid-column: 3;
+  grid-row: 1;
+}
+button .border svg:nth-child(5) {
+  grid-column: 1;
+  grid-row: 3;
+}
+button .border svg:nth-child(7) {
+  grid-column: 3;
+  grid-row: 3;
+}
+button .border .line {
+  height: 2px;
+  width: 100%;
+  background-color: var(--border-color);
+  position: relative;
+  transition: background-color 0.3s;
+}
+button .border .line:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+}
+button .border .line:nth-child(4), button .border .line:nth-child(8) {
+  width: 2px;
+  z-index: 3;
+  height: calc(100% + 1px);
+}
+button .border .line:nth-child(4):before, button .border .line:nth-child(8):before {
+  content: "";
+  top: 50%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+button .border .line:nth-child(4) {
+  grid-column: 1;
+  grid-row: 2;
+  margin-left: 7px;
+}
+button .border .line:nth-child(6) {
+  grid-column: 2;
+  grid-row: 3;
+  margin-top: 13px;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+  background-color: var(--border-color);
+}
+button .border .line:nth-child(6):before {
+  content: "";
+  inset: 0;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+button .border .line:nth-child(8) {
+  grid-column: 3;
+  grid-row: 2;
+  margin-left: 14px;
+}
+button .label {
+  padding: 16px 24px;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(0, 0, 0, 0.34) 50.01%, rgba(0, 0, 0, 0) 100%), linear-gradient(180deg, #31221B 0%, #341307 100%);
+  background-blend-mode: overlay, overlay, overlay, normal;
+  box-shadow: 0px -1px 1px 0px rgba(0, 0, 0, 0.4) inset;
+  -webkit-clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 13px, 100% calc(100% - 13px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 13px), 0 13px);
+          clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 13px, 100% calc(100% - 13px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 13px), 0 13px);
+  color: #fff;
+  font-family: "Cormorant Garamond", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 16px;
+  white-space: nowrap;
+  text-shadow: 0 2px 1px rgba(0, 0, 0, 0.25);
+  transform: translateZ(0);
+}
+button .label span {
+  background: linear-gradient(180deg, #FFE5C2 1%, #CDAF87 100%), #FFFFFF;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  display: block;
+  opacity: var(--text-opacity, 0.8);
+  transition: opacity 0.3s;
+}
+button .label .top,
+button .label .bottom {
+  left: 0;
+  right: 0;
+  position: absolute;
+  height: 6px;
+  overflow: hidden;
+}
+button .label .top div, button .label .top:before, button .label .top:after,
+button .label .bottom div,
+button .label .bottom:before,
+button .label .bottom:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+button .label .top {
+  top: 0;
+  background: radial-gradient(61.17% 100% at 50% 100%, transparent, rgba(255, 255, 255, 0) 100%);
+}
+button .label .top div {
+  inset: 0;
+  background: radial-gradient(70% 100% at 50% 100%, rgba(255, 255, 255, 0.75) 0%, transparent 100%);
+  mix-blend-mode: overlay;
+  opacity: var(--top-shine-opacity, 0.75);
+  transition: opacity 0.3s;
+}
+button .label .top div:nth-child(2) {
+  background: radial-gradient(80% 100% at 50% 100%, rgb(255, 255, 255) 40%, transparent 100%);
+}
+button .label .top div:nth-child(3) {
+  background: radial-gradient(80% 100% at 50% 100%, rgb(255, 255, 255) 20%, transparent 100%);
+}
+button .label .top:before {
+  height: 0;
+  bottom: 0;
+  background: radial-gradient(61.17% 100% at 50% 100%, #FFFFFF 0%, rgb(255, 255, 255) 100%);
+  mix-blend-mode: overlay;
+  background-blend-mode: screen;
+}
+button .label .top:after {
+  height: 1px;
+  bottom: 0;
+  z-index: 1;
+  background: linear-gradient(to right, transparent 0%, rgb(255, 255, 255) 50%, transparent 100%);
+}
+button .label .bottom {
+  bottom: 0;
+  background: radial-gradient(89.02% 100% at 50% 100%, rgba(0, 0, 0, 0.6) 20%, rgba(0, 0, 0, 0.6) 100%);
+  mix-blend-mode: overlay;
+  transform: matrix(1, 0, 0, -1, 0, 0);
+}
+button .label .bottom div {
+  height: 1px;
+  bottom: 0;
+  background: radial-gradient(circle at 33% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 30%), radial-gradient(circle at 66% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 20%);
+  opacity: var(--bottom-shine-opacity, 0.7);
+  transition: opacity 0.3s;
+}
+button:focus-visible, button:hover {
+  --top-shine-opacity: 1;
+  --bottom-shine-opacity: 1;
+  --border-color: #CEB390;
+  --text-opacity: 1;
+}
+
+.defs {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* body {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  background: #404040;
+}# sourceMappingURL=css.css.map */
