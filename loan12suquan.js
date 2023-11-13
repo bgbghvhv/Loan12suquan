@@ -483,7 +483,6 @@ var shapeCheck = [
     ]
 ];
 
-
 function solveShape(x, y, k) {
     let count = 0;
     let listItem = []
@@ -491,19 +490,19 @@ function solveShape(x, y, k) {
         for (let j = 0; j < 3; j++) {
             let xx = x + i;
             let yy = y + j;
-            if (shapeCheck[k][i][j] == 1 && checkInSquare(xx, yy)) {
+            if (shapeCheck[k][i][j] == 1 && checkInSquare(xx, yy) && !board[xx][yy].src.includes('blank')) {
                 if (listItem.length == 0) {
                     listItem[count++] = board[xx][yy]
                 } else {
-                    if (board[xx][yy].src == listItem[0].src && !board[xx][yy].src.includes('blank')) {
+                    if (board[xx][yy].src == listItem[0].src) {
                         listItem[count++] = board[xx][yy]
                     }
                 }
             }
         }
     }
+
     if (count == 5) {
-        console.log(listItem);
         removeListItem(listItem)
     }
 }
