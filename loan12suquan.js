@@ -7,8 +7,8 @@ var columns = 9;
 let isTurn = 0; // false = nguoi choi // true: bot
 var eat = []
 var player = []
-player.push(new Player("Hiep", 300, 0, 100, 10, "./images/dinhbolinh4.gif", 300))
-player.push(new Player("Bot", 30, 0, 100, 10, "./images/bot.gif", 300))
+player.push(new Player("Hiep", 300, 0, 100, 20, "./images/dinhbolinh4.gif", 300))
+player.push(new Player("Bot", 300, 0, 100, 20, "./images/bot.gif", 300))
 
 var currTile;
 var otherTile;
@@ -43,24 +43,24 @@ window.onload = function () {
     drawGame();
     startGame();
     var count = 0;
-    while (count++ < 100) {
+    while (count++ < 10) {
         checkItem();
         generateCandy()
-        slideCandy()
+        slideBlock()
     }
     eat = [];
     let intervalId = setInterval(() => {
         player[isTurn].food -= 1;
 
         if (player[0].food <= 0 || player[0].health <= 0) {
-            clearInterval(intervalId); 
+            clearInterval(intervalId);
             alert("YOU LOSE");
             localStorage.setItem('state', 'lose');
             window.location.href = 'end.html';
             return
         }
         if (player[1].food <= 0 || player[1].health <= 0) {
-            clearInterval(intervalId); 
+            clearInterval(intervalId);
             alert("YOU WIN");
             localStorage.setItem('state', 'win');
             window.location.href = 'end.html';
@@ -73,7 +73,7 @@ window.onload = function () {
         document.getElementById("bot-food").style.width = player[1].food + "%";
 
 
-        if(isTurn) {
+        if (isTurn) {
             document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" alt="">`;
             document.getElementById("bot").innerHTML = `<img src="` + player[1].img + `" alt="">`;
             document.getElementById("bot").innerHTML += `<img src='./images/fire3.gif' style="height: 400px; position: relative; top: -400px; left: -50px; z-index: 0;" alt="">`;
@@ -111,7 +111,7 @@ function playAction() {
     while (count++ < 10) {
         checkItem();
         generateCandy()
-        slideCandy()
+        slideBlock()
     }
 
     var str = `<table><tr>`;
@@ -188,6 +188,16 @@ var BOT_MOVE_X = [0, 1]
 var BOT_MOVE_Y = [1, 0]
 
 function botPlay() {
+    if (player[1].mana >= 60) {
+        useSkill(6);
+        return;
+    }
+
+    if (player[1].mana >= 30) {
+        useSkill(3);
+        return;
+    }
+
     for (let r = rows - 2; r >= 0; r--) {
         for (let c = columns - 2; c >= 0; c--) {
             for (let i = 0; i < 2; i++) {
@@ -312,8 +322,9 @@ function dragEnd() {
 }
 
 function checkItem() {
+    checkShape()
     checkFiveItem()
-    checkFourItem();
+    checkFourItem()
     checkThreeItem()
 }
 
@@ -379,10 +390,10 @@ function checkFourItem() {
     }
 }
 
-const START_ROW_FIVE = [0, 0, 0, -2, 0, -2, -1, -1, -2, 0];
-const START_COL_FIVE = [0, 0, 0, 0, -2, -2, 0, -2, -1, -1];
-const END_ROW_FIVE = [4, 0, 2, 0, 2, 0, 1, 1, 0, 2];
-const END_COL_FIVE = [0, 4, 2, 2, 0, 0, 2, 0, 1, 1];
+const START_ROW_FIVE = [0, 0];
+const END_ROW_FIVE = [4, 0];
+const START_COL_FIVE = [0, 0];
+const END_COL_FIVE = [0, 4];
 
 function checkFiveItem() {
     for (let time = 0; time < START_ROW_FIVE.length; time++) {
@@ -429,6 +440,84 @@ function checkListInSquare(row, col, startX, endX, startY, endY, isDelete) {
     return result;
 }
 
+var shapeCheck = [
+    [
+        [1, 1, 1],
+        [0, 0, 1],
+        [0, 0, 1]
+    ],
+    [
+        [1, 1, 1],
+        [1, 0, 0],
+        [1, 0, 0]
+    ],
+    [
+        [1, 1, 1],
+        [0, 1, 0],
+        [0, 1, 0]
+    ],
+    [
+        [1, 0, 0],
+        [1, 1, 1],
+        [1, 0, 0]
+    ],
+    [
+        [1, 0, 0],
+        [1, 0, 0],
+        [1, 1, 1]
+    ],
+    [
+        [0, 1, 0],
+        [0, 1, 0],
+        [1, 1, 1]
+    ],
+    [
+        [0, 0, 1],
+        [0, 0, 1],
+        [1, 1, 1]
+    ],
+    [
+        [0, 0, 1],
+        [1, 1, 1],
+        [0, 0, 1]
+    ]
+];
+
+
+function solveShape(x, y, k) {
+    let count = 0;
+    let listItem = []
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            let xx = x + i;
+            let yy = y + j;
+            if (shapeCheck[k][i][j] == 1 && checkInSquare(xx, yy)) {
+                if (listItem.length == 0) {
+                    listItem[count++] = board[xx][yy]
+                } else {
+                    if (board[xx][yy].src == listItem[0].src && !board[xx][yy].src.includes('blank')) {
+                        listItem[count++] = board[xx][yy]
+                    }
+                }
+            }
+        }
+    }
+    if (count == 5) {
+        console.log(listItem);
+        removeListItem(listItem)
+    }
+}
+
+function checkShape() {
+    for (let i = 0; i < rows - 3; i++) {
+        for (let j = 0; j < columns - 3; j++) {
+            for (let k = 0; k < shapeCheck.length; k++) {
+                solveShape(i, j, k)
+            }
+        }
+    }
+}
+
 function checkValid() {
     for (let time = 0; time < rowValid.length; time++) {
         for (let i = 0; i < rows; i++) {
@@ -443,7 +532,7 @@ function checkValid() {
     return false;
 }
 
-function slideCandy() {
+function slideBlock() {
     var check = false;
     for (let c = 0; c < columns; c++) {
         let ind = rows - 1;
@@ -470,52 +559,72 @@ function generateCandy() {
     }
 }
 
-function useSkill(mana) {
+function selectSkill(number) {
+    if (isTurn == 1) return;
 
-    if (isTurn == 0) {
-        var check = false;
-        var damageSkill = 0;
-
-        switch (mana) {
-            case 1:
-                if (player[isTurn].mana < 10) check = true;;
-                damageSkill = 10;
-                break;
-            case 2:
-                if (player[isTurn].mana < 20) check = true;
-                damageSkill = 20;
-                break;
-            case 3:
-                if (player[isTurn].mana < 30) check = true;
-                damageSkill = 50;
-                break;
-            case 6:
-                if (player[isTurn].mana < 60) check = true;
-                damageSkill = 100;
-                break;
-            case 10:
-                if (player[isTurn].mana < 100) check = true;
-                damageSkill = 200;
-                break;
-            default:
-                break;
-        }
-
-        if (check) {
-            alert("Không đủ mana")
-            return;
-        }
-        player[1 - isTurn].health -= damageSkill;
-        player[isTurn].mana -= mana * 10;
-
-
-
-        eat['skill' + mana] = 1;
-        playAction();
+    if (checkSkill(number, 0)) {
+        useSkill(number, 0);
         setTimeout(() => {
             botPlay()
         }, 3000);
+    } else {
+        alert("Không đủ mana")
     }
 }
 
-window.useSkill = useSkill;
+function checkSkill(number) {
+    var manaCheck = player[isTurn].mana;
+    switch (number) {
+        case 1:
+            if (manaCheck < 10) return false;
+            break;
+        case 2:
+            if (manaCheck < 20) return false;
+            break;
+        case 3:
+            if (manaCheck < 30) return false;
+            break;
+        case 6:
+            if (manaCheck < 60) return false;
+            break;
+        case 10:
+            if (manaCheck < 100) return false;
+            break;
+        default:
+            break;
+    }
+
+    return true;
+}
+
+function useSkill(mana, turn) {
+    var damageSkill = 0;
+
+    switch (mana) {
+        case 1:
+            damageSkill = 10;
+            break;
+        case 2:
+            damageSkill = 20;
+            break;
+        case 3:
+            damageSkill = 50;
+            break;
+        case 6:
+            damageSkill = 100;
+            break;
+        case 10:
+            damageSkill = 200;
+            break;
+        default:
+            break;
+    }
+
+    player[1 - isTurn].health -= damageSkill;
+    player[isTurn].mana -= mana * 10;
+
+    eat['skill' + mana] = 1;
+    playAction();
+}
+
+window.selectSkill = selectSkill;
