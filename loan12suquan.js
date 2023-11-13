@@ -7,8 +7,8 @@ var columns = 9;
 let isTurn = 0; // false = nguoi choi // true: bot
 var eat = []
 var player = []
-player.push(new Player("Hiep", 300, 30, 100, 10, "./images/dinhbolinh4.gif", 300))
-player.push(new Player("Bot", 300, 0, 100, 10, "./images/bot.gif", 300))
+player.push(new Player("Hiep", 300, 0, 100, 10, "./images/dinhbolinh4.gif", 300))
+player.push(new Player("Bot", 30, 0, 100, 10, "./images/bot.gif", 300))
 
 var currTile;
 var otherTile;
