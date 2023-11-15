@@ -10,7 +10,7 @@ body::before {
 }
 
 body {
-    background: url("./images/background9.gif") no-repeat center center fixed;
+    background: url("./images/background1.gif") no-repeat center center fixed;
     background-size: cover;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
