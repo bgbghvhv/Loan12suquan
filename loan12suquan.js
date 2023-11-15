@@ -201,24 +201,29 @@ function botPlay() {
 
     for (let r = rows - 2; r >= 0; r--) {
         for (let c = columns - 2; c >= 0; c--) {
-            for (let i = 0; i < 2; i++) {
-                let r2 = r + BOT_MOVE_X[i]
-                let c2 = c + BOT_MOVE_Y[i];
+            console.log(board[r][c].src);
+            if (board[r][c].src.includes("vndcoin") || board[r][c].src.includes("book") || board[r][c].src.includes("banhchung")) {
+                console.log(board[r][c].src);
+            } else {
+                for (let i = 0; i < 2; i++) {
+                    let r2 = r + BOT_MOVE_X[i]
+                    let c2 = c + BOT_MOVE_Y[i];
 
-                let curr = board[r][c];
-                let other = board[r2][c2];
-                let temp = curr.src
-                curr.src = other.src;
-                other.src = temp
-
-                let validMove = checkValid();
-                if (!validMove) {
+                    let curr = board[r][c];
+                    let other = board[r2][c2];
                     let temp = curr.src
                     curr.src = other.src;
                     other.src = temp
-                } else {
-                    playAction()
-                    return;
+
+                    let validMove = checkValid();
+                    if (!validMove) {
+                        let temp = curr.src
+                        curr.src = other.src;
+                        other.src = temp
+                    } else {
+                        playAction()
+                        return;
+                    }
                 }
             }
         }
