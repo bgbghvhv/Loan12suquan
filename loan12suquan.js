@@ -7,7 +7,7 @@ var columns = 9;
 let isTurn = 0; // false = nguoi choi // true: bot
 var eat = []
 var player = []
-player.push(new Player("Hiep", 300, 0, 100, 20, "./images/dinhbolinh4.gif", 300))
+player.push(new Player("Đinh Bộ Lĩnh", 300, 0, 100, 20, "./images/dinhbolinh6.gif", 300))
 player.push(new Player("Bot", 300, 0, 100, 20, "./images/bot.gif", 300))
 
 var currTile;
@@ -119,7 +119,7 @@ function playAction() {
         if (key.includes("skill")) {
             str +=
                 `<td>
-                    <img src="./images/${key}.png" style="height: 400px;">
+                    <img src="./images/${key}.jpg" style="height: 400px;">
                 </td>`
         } else {
             str +=
