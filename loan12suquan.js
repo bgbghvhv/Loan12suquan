@@ -173,6 +173,16 @@ function playAction() {
         }
     }
 
+    if (eat["book"]) {
+        var manaDef = eat["book"] * 10;
+        if(manaDef > player[1 - isTurn].mana) {
+            manaDef = player[1 - isTurn].mana;
+        }
+
+        player[isTurn].mana += manaDef;
+        player[1 - isTurn].mana -= manaDef;
+    }
+
     eat = []
     document.getElementById("nameTurn").innerText = isTurn ? "Lượt của máy" : "Lượt của bạn"
     isTurn = isTurn ? 0 : 1;
