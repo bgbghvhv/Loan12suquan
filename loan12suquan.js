@@ -7,7 +7,7 @@ var columns = 9;
 let isTurn = 0; // false = nguoi choi // true: bot
 var eat = []
 var player = []
-player.push(new Player("Đinh Bộ Lĩnh", 300, 0, 100, 20, "./images/dinhbolinh6.gif", 300))
+player.push(new Player("Đinh Bộ Lĩnh", 300, 0, 100, 20, "./images/dinhbolinh7.gif", 300))
 player.push(new Player("Bot", 300, 0, 100, 20, "./images/bot.gif", 300))
 
 var currTile;
@@ -74,19 +74,19 @@ window.onload = function () {
 
 
         if (isTurn) {
-            document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" alt="">`;
+            document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" style="width: 350px; height: 350px;" alt="">`;
             document.getElementById("bot").innerHTML = `<img src="` + player[1].img + `" alt="">`;
             document.getElementById("bot").innerHTML += `<img src='./images/fire3.gif' style="height: 400px; position: relative; top: -400px; left: -50px; z-index: 0;" alt="">`;
         } else {
-            document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" alt="">`;
+            document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" style="width: 350px; height: 350px;" alt="">`;
             document.getElementById("bot").innerHTML = `<img src="` + player[1].img + `" alt="">`;
-            document.getElementById("player").innerHTML += `<img src='./images/fire3.gif' style="height: 400px; position: relative; top: -400px; right: -50px; z-index: 0;" alt="">`;
+            document.getElementById("player").innerHTML += `<img src='./images/fire3.gif' style="height: 400px; position: relative; top: -400px; right: 60px; z-index: 0;" alt="">`;
         }
     }, 1000);
 }
 
 function drawGame() {
-    document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" alt="">`;
+    document.getElementById("player").innerHTML = `<img src="` + player[0].img + `" style="width: 350px; height: 350px;" alt="">`;
     document.getElementById("bot").innerHTML = `<img src="` + player[1].img + `" alt="">`;
 
     document.getElementById("player-health-text").innerText = player[0].health + "/300";
